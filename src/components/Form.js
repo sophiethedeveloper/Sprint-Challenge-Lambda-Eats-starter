@@ -48,15 +48,31 @@ const OrderForm = () => {
     tomatoes: yup.boolean(),
   });
 
-  // new state to set our post request too. So we can console.log and see it.
-//   const [post, setPost] = useState();
 
   //submit form
   const submit = () => {
     schema.validate(formData).then(() => {
-        axios.post('https://reqres.in/api/users', formData).then((res) => {
+        axios
+        .post('https://reqres.in/api/users', formData)
+        .then((res) => {
             console.log(res.data, 'this is your posted data')
-        });
+
+            //reset information on form
+            setFormData({
+                name: "",
+                size: "",
+                sauce: "",
+                protein: "",
+                pineapple: false,
+                onion: false,
+                pepper: false,
+                tomatoes: false,
+                cheese: false,
+                special: "",
+            });
+        })
+        .catch(err => console.log(err.response));
+
     });
   };
 
