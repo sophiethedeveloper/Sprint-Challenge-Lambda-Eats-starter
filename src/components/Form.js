@@ -34,6 +34,20 @@ const OrderForm = () => {
     special: "",
   });
 
+  //state
+  const [finalOrder, setFinalOrder] = useState({
+    name: "",
+    size: "",
+    sauce: "",
+    protein: "",
+    pineapple: false,
+    onion: false,
+    pepper: false,
+    tomatoes: false,
+    cheese: false,
+    special: ""
+  })
+
   //   Validation
   const schema = yup.object().shape({
     name: yup.string().required("Please Include Your Full Name").min(2),
@@ -48,9 +62,16 @@ const OrderForm = () => {
     tomatoes: yup.boolean(),
   });
 
+  const orderData = () => {
+    axios.post('https://reqres.in/api/users', finalOrder).then((res) => {
+        console.log(res.data, 'this is your posted data')
+        setFinalOrder(res.data)
+    });
+  }
 
   //submit form
-  const submit = () => {
+  const formSubmit = (e) => {
+    e.preventDefault();
     schema.validate(formData).then(() => {
         axios
         .post('https://reqres.in/api/users', formData)
@@ -74,12 +95,10 @@ const OrderForm = () => {
         .catch(err => console.log(err.response));
 
     });
+
+    orderData();
   };
 
-  const formSubmit = (e) => {
-    e.preventDefault();
-    submit();
-  }
 
   //Making the button clickable until the whole form is submitted
   useEffect(() => {
@@ -182,7 +201,7 @@ const OrderForm = () => {
               <Input
                 type="radio"
                 name="sauce"
-                value="original red"
+                value={formData.sauce}
                 onChange={handleChange}
               />
               Original Red
@@ -193,7 +212,7 @@ const OrderForm = () => {
               <Input
                 type="radio"
                 name="sauce"
-                value="garlic-ranch"
+                value={formData.sauce}
                 onChange={handleChange}
               />
               Garlic Ranch
@@ -204,7 +223,7 @@ const OrderForm = () => {
               <Input
                 type="radio"
                 name="sauce"
-                value="bbq-sauce"
+                value={formData.sauce}
                 onChange={handleChange}
               />
               BBQ Sauce
@@ -215,7 +234,7 @@ const OrderForm = () => {
               <Input
                 type="radio"
                 name="sauce"
-                value="spinach-alfredo"
+                value={formData.sauce}
                 onChange={handleChange}
               />
               Spinach Alfredo
@@ -232,7 +251,7 @@ const OrderForm = () => {
               <Input
                 type="radio"
                 name="protein"
-                value="beef"
+                value={formData.protein}
                 onChange={handleChange}
               />
               Beef
@@ -243,7 +262,7 @@ const OrderForm = () => {
               <Input
                 type="radio"
                 name="protein"
-                value="chicken"
+                value={formData.protein}
                 onChange={handleChange}
               />
               Chicken
@@ -254,7 +273,7 @@ const OrderForm = () => {
               <Input
                 type="radio"
                 name="protein"
-                value="pork"
+                value={formData.protein}
                 onChange={handleChange}
               />
               Pork
@@ -265,7 +284,7 @@ const OrderForm = () => {
               <Input
                 type="radio"
                 name="protein"
-                value="pepperoni"
+                value={formData.protein}
                 onChange={handleChange}
               />
               Pepperoni
@@ -276,7 +295,7 @@ const OrderForm = () => {
               <Input
                 type="radio"
                 name="protein"
-                value="sausage"
+                value={formData.protein}
                 onChange={handleChange}
               />
               Sausage
@@ -287,7 +306,7 @@ const OrderForm = () => {
               <Input
                 type="radio"
                 name="protein"
-                value="bacon"
+                value={formData.protein}
                 onChange={handleChange}
               />
               Bacon
@@ -370,10 +389,9 @@ const OrderForm = () => {
             onChange={handleChange}
           />
         </FormGroup>
-
-        <Button disabled={buttonDisabled}>
-          Submit
-        </Button>
+        <Link to="/final">
+        <Button isabled={buttonDisabled} >Submit</Button>
+        </Link>
       </Form>
     </>
   );
