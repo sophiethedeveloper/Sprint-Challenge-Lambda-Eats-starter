@@ -1,5 +1,5 @@
-import React, { useState} from "react";
-import {Link} from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Card,
   CardImg,
@@ -16,12 +16,11 @@ import axios from "axios";
 import * as yup from "yup";
 
 const OrderForm = () => {
-
-    //This state handles the drop down menu
-    const [dropDownOpen, setDropDownOpen] = useState(false);
-    const [formData, setFormData] = useState({
+  //This state handles the drop down menu
+  const [dropDownOpen, setDropDownOpen] = useState(false);
+  const [formData, setFormData] = useState({
     name: "",
-    number: "",
+    size: "",
     sauce: "",
     protein: "",
     pineapple: false,
@@ -42,9 +41,9 @@ const OrderForm = () => {
 
   const toggle = () => setDropDownOpen((prevState) => !prevState);
 
-    return(
-        <>
-        <Card color="info" style={{margin: "40px auto"}}>
+  return (
+    <>
+      <Card color="info" style={{ margin: "40px auto" }}>
         <h2 style={{ color: "white", margin: "20px auto" }}>
           Create your own Pizza!
         </h2>
@@ -53,10 +52,7 @@ const OrderForm = () => {
           src={require("../img/pizza-2.jpg")}
         />
       </Card>
-      <Form
-        data-cy="submit"
-        style={{ margin: "20px auto", width: '50%' }}
-      >
+      <Form data-cy="submit" style={{ margin: "20px auto", width: "50%" }}>
         <FormGroup>
           <legend>Name</legend>
           <Input
@@ -73,48 +69,48 @@ const OrderForm = () => {
         <FormGroup>
           <Dropdown isOpen={dropDownOpen} toggle={toggle}>
             <DropdownToggle caret>
-              {formData.number === 0 ? "Number of Tacos" : formData.number}
+              {formData.size === 0 ? "Select Your Pizza Size" : formData.size}
             </DropdownToggle>
-            <DropdownMenu>
+            <DropdownMenu >
               <div
                 onClick={() => {
                   toggle();
-                  setFormData({ ...formData, number: 0 });
+                  setFormData({ ...formData, size: 0 });
                 }}
               >
-                0
+               --Select Your Size--
               </div>
               <div
                 onClick={() => {
                   toggle();
-                  setFormData({ ...formData, number: 1 });
+                  setFormData({ ...formData, size: "Small" });
                 }}
               >
-                1
+                Small
               </div>
               <div
                 onClick={() => {
                   toggle();
-                  setFormData({ ...formData, number: 2 });
+                  setFormData({ ...formData, size: "Medium" });
                 }}
               >
-                2
+                Medium
               </div>
               <div
                 onClick={() => {
                   toggle();
-                  setFormData({ ...formData, number: 3 });
+                  setFormData({ ...formData, size: "Large" });
                 }}
               >
-                3
+                Large
               </div>
               <div
                 onClick={() => {
                   toggle();
-                  setFormData({ ...formData, number: 4 });
+                  setFormData({ ...formData, size: "Extra-Large" });
                 }}
               >
-                4
+                Extra Large
               </div>
             </DropdownMenu>
           </Dropdown>
@@ -215,7 +211,7 @@ const OrderForm = () => {
                 value="pepperoni"
                 onChange={handleChange}
               />
-             Pepperoni
+              Pepperoni
             </Label>
           </FormGroup>
           <FormGroup check>
@@ -226,7 +222,7 @@ const OrderForm = () => {
                 value="sausage"
                 onChange={handleChange}
               />
-             Sausage
+              Sausage
             </Label>
           </FormGroup>
           <FormGroup check>
@@ -237,7 +233,7 @@ const OrderForm = () => {
                 value="bacon"
                 onChange={handleChange}
               />
-             Bacon
+              Bacon
             </Label>
           </FormGroup>
         </FormGroup>
@@ -318,11 +314,11 @@ const OrderForm = () => {
           />
         </FormGroup>
         <Link to="/final">
-        <Button>Submit</Button>
+          <Button>Submit</Button>
         </Link>
       </Form>
-        </>
-    )
-}
+    </>
+  );
+};
 
 export default OrderForm;
