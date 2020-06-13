@@ -109,7 +109,7 @@ const OrderForm = () => {
           src={require("../img/pizza-2.jpg")}
         />
       </Card>
-      <Form onSubmit={formSubmit} style={{ margin: "20px auto", width: "50%" }}>
+      <Form data-cy="submit" onSubmit={formSubmit} style={{ margin: "20px auto", width: "50%" }}>
         <FormGroup>
           <legend>Name</legend>
           <Input
@@ -371,7 +371,7 @@ const OrderForm = () => {
           />
         </FormGroup>
 
-        <Button data-cy="submit" disabled={buttonDisabled}>
+        <Button disabled={buttonDisabled}>
           Submit
         </Button>
       </Form>
