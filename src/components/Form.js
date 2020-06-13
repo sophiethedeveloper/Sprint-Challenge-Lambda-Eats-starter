@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -16,6 +16,9 @@ import axios from "axios";
 import * as yup from "yup";
 
 const OrderForm = () => {
+  // state for whether our button should be disabled or not.
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+
   //This state handles the drop down menu
   const [dropDownOpen, setDropDownOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -30,6 +33,44 @@ const OrderForm = () => {
     cheese: false,
     special: "",
   });
+
+  //   Validation
+  const schema = yup.object().shape({
+    name: yup.string().required("Please Include Your Full Name").min(2),
+    size: yup.string().required("Must include pizza size"),
+    sauce: yup.string().required(),
+    protein: yup.string().required(),
+    special: yup.string(),
+    pineapple: yup.boolean(),
+    onion: yup.boolean(),
+    pepper: yup.boolean(),
+    cheese: yup.boolean(),
+    tomatoes: yup.boolean(),
+  });
+
+  // new state to set our post request too. So we can console.log and see it.
+//   const [post, setPost] = useState();
+
+  //submit form
+  const submit = () => {
+    schema.validate(formData).then(() => {
+        axios.post('https://reqres.in/api/users', formData).then((res) => {
+            console.log(res.data, 'this is your posted data')
+        });
+    });
+  };
+
+  const formSubmit = (e) => {
+    e.preventDefault();
+    submit();
+  }
+
+  //Making the button clickable until the whole form is submitted
+  useEffect(() => {
+    schema.isValid(formData).then((valid) => {
+      setButtonDisabled(!valid);
+    });
+  }, [formData]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -52,7 +93,7 @@ const OrderForm = () => {
           src={require("../img/pizza-2.jpg")}
         />
       </Card>
-      <Form data-cy="submit" style={{ margin: "20px auto", width: "50%" }}>
+      <Form onSubmit={formSubmit} style={{ margin: "20px auto", width: "50%" }}>
         <FormGroup>
           <legend>Name</legend>
           <Input
@@ -71,14 +112,14 @@ const OrderForm = () => {
             <DropdownToggle caret>
               {formData.size === 0 ? "Select Your Pizza Size" : formData.size}
             </DropdownToggle>
-            <DropdownMenu >
+            <DropdownMenu>
               <div
                 onClick={() => {
                   toggle();
                   setFormData({ ...formData, size: 0 });
                 }}
               >
-               --Select Your Size--
+                --Select Your Size--
               </div>
               <div
                 onClick={() => {
@@ -313,9 +354,10 @@ const OrderForm = () => {
             onChange={handleChange}
           />
         </FormGroup>
-        <Link to="/final">
-          <Button>Submit</Button>
-        </Link>
+
+        <Button data-cy="submit" disabled={buttonDisabled}>
+          Submit
+        </Button>
       </Form>
     </>
   );
