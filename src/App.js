@@ -6,7 +6,7 @@ import OrderForm from "./components/Form.js";
 const App = () => {
   return (
     <>
-      <Navbar color="info">
+      <Navbar color="success">
         <h1 style={{ color: "white" }}>Lambda Eats</h1>
         <Link to="/">
           <Button color="info">Home</Button>

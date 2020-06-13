@@ -17,6 +17,31 @@ import * as yup from "yup";
 
 const OrderForm = () => {
 
+    //This state handles the drop down menu
+    const [dropDownOpen, setDropDownOpen] = useState(false);
+    const [formData, setFormData] = useState({
+    name: "",
+    number: "",
+    sauce: "",
+    protein: "",
+    pineapple: false,
+    onion: false,
+    pepper: false,
+    tomatoes: false,
+    cheese: false,
+    special: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleToppings = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.checked });
+  };
+
+  const toggle = () => setDropDownOpen((prevState) => !prevState);
+
     return(
         <>
         <Card color="info" style={{margin: "40px auto"}}>
@@ -37,8 +62,62 @@ const OrderForm = () => {
           <Input
             type="name"
             name="name"
+            value={formData.name}
+            onChange={handleChange}
             data-cy="name"
           />
+        </FormGroup>
+
+        {/* To Select the pizza size */}
+
+        <FormGroup>
+          <Dropdown isOpen={dropDownOpen} toggle={toggle}>
+            <DropdownToggle caret>
+              {formData.number === 0 ? "Number of Tacos" : formData.number}
+            </DropdownToggle>
+            <DropdownMenu>
+              <div
+                onClick={() => {
+                  toggle();
+                  setFormData({ ...formData, number: 0 });
+                }}
+              >
+                0
+              </div>
+              <div
+                onClick={() => {
+                  toggle();
+                  setFormData({ ...formData, number: 1 });
+                }}
+              >
+                1
+              </div>
+              <div
+                onClick={() => {
+                  toggle();
+                  setFormData({ ...formData, number: 2 });
+                }}
+              >
+                2
+              </div>
+              <div
+                onClick={() => {
+                  toggle();
+                  setFormData({ ...formData, number: 3 });
+                }}
+              >
+                3
+              </div>
+              <div
+                onClick={() => {
+                  toggle();
+                  setFormData({ ...formData, number: 4 });
+                }}
+              >
+                4
+              </div>
+            </DropdownMenu>
+          </Dropdown>
         </FormGroup>
 
         {/* form for the sauces */}
@@ -51,6 +130,7 @@ const OrderForm = () => {
                 type="radio"
                 name="sauce"
                 value="original red"
+                onChange={handleChange}
               />
               Original Red
             </Label>
@@ -61,6 +141,7 @@ const OrderForm = () => {
                 type="radio"
                 name="sauce"
                 value="garlic-ranch"
+                onChange={handleChange}
               />
               Garlic Ranch
             </Label>
@@ -71,6 +152,7 @@ const OrderForm = () => {
                 type="radio"
                 name="sauce"
                 value="bbq-sauce"
+                onChange={handleChange}
               />
               BBQ Sauce
             </Label>
@@ -81,6 +163,7 @@ const OrderForm = () => {
                 type="radio"
                 name="sauce"
                 value="spinach-alfredo"
+                onChange={handleChange}
               />
               Spinach Alfredo
             </Label>
@@ -97,6 +180,7 @@ const OrderForm = () => {
                 type="radio"
                 name="protein"
                 value="beef"
+                onChange={handleChange}
               />
               Beef
             </Label>
@@ -107,6 +191,7 @@ const OrderForm = () => {
                 type="radio"
                 name="protein"
                 value="chicken"
+                onChange={handleChange}
               />
               Chicken
             </Label>
@@ -117,6 +202,7 @@ const OrderForm = () => {
                 type="radio"
                 name="protein"
                 value="pork"
+                onChange={handleChange}
               />
               Pork
             </Label>
@@ -127,7 +213,7 @@ const OrderForm = () => {
                 type="radio"
                 name="protein"
                 value="pepperoni"
-               
+                onChange={handleChange}
               />
              Pepperoni
             </Label>
@@ -138,7 +224,7 @@ const OrderForm = () => {
                 type="radio"
                 name="protein"
                 value="sausage"
-               
+                onChange={handleChange}
               />
              Sausage
             </Label>
@@ -149,7 +235,7 @@ const OrderForm = () => {
                 type="radio"
                 name="protein"
                 value="bacon"
-               
+                onChange={handleChange}
               />
              Bacon
             </Label>
@@ -165,7 +251,8 @@ const OrderForm = () => {
               <Input
                 type="checkbox"
                 name="pineapple"
-               
+                checked={formData.pineapple}
+                onChange={handleToppings}
                 data-cy="pineapple"
               />
               Pineapple
@@ -176,7 +263,8 @@ const OrderForm = () => {
               <Input
                 type="checkbox"
                 name="onion"
-              
+                checked={formData.onion}
+                onChange={handleToppings}
                 data-cy="onion"
               />
               Onion
@@ -187,7 +275,8 @@ const OrderForm = () => {
               <Input
                 type="checkbox"
                 name="pepper"
-               
+                checked={formData.pepper}
+                onChange={handleToppings}
                 data-cy="pepper"
               />
               Green Pepper
@@ -198,6 +287,8 @@ const OrderForm = () => {
               <Input
                 type="checkbox"
                 name="tomatoes"
+                checked={formData.tomatoes}
+                onChange={handleToppings}
                 data-cy="tomatoes"
               />
               Diced Tomatoes
@@ -208,6 +299,8 @@ const OrderForm = () => {
               <Input
                 type="checkbox"
                 name="cheese"
+                checked={formData.cheese}
+                onChange={handleToppings}
                 data-cy="cheese"
               />
               Cheese
@@ -220,7 +313,8 @@ const OrderForm = () => {
           <Input
             type="textarea"
             name="special"
-            
+            value={formData.special}
+            onChange={handleChange}
           />
         </FormGroup>
         <Link to="/final">
